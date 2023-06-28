@@ -79,7 +79,7 @@ namespace ASP.NET_API.Controllers
         {
             if (ValidaNumero(primeiroNumero)) 
             {
-                var resultado = Convert.ToSingle(Math.Sqrt(Convert.ToDouble(primeiroNumero))); ;
+                var resultado = Convert.ToSingle(Math.Sqrt((double)ConverteDecimal(primeiroNumero))); ;
                 return Ok(resultado.ToString());
             }
             return BadRequest("Números invalidos!");
