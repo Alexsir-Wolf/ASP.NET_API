@@ -1,3 +1,5 @@
+using ASP.NET_API.Servicos;
+using ASP.NET_API.Servicos.Implementacoes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,9 @@ namespace ASP.NET_API
         {
 
             services.AddControllers();
+
+            //injeção de dependencia
+            services.AddScoped<IPessoaService, ImplementacaoServicosPessoa>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
