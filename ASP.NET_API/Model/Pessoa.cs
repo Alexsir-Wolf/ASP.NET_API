@@ -1,4 +1,6 @@
-﻿namespace ASP.NET_API.Model
+﻿using System;
+
+namespace ASP.NET_API.Model
 {
     public class Pessoa
     {
@@ -8,5 +10,6 @@
         public string Endereco { get; set; }
         public string Genero { get; set; }
         public string Email { get; set; }
+		public int? Idade { get; set; }
     }
 }

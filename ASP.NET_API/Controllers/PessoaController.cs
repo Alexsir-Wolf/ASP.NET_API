@@ -2,16 +2,12 @@
 using ASP.NET_API.Servicos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Threading.Tasks;
 
 namespace ASP.NET_API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+	[ApiController]
+    [Route("api/pessoa/v{version:apiVersion}")]
     public class PessoaController : ControllerBase
     {
         private readonly ILogger<PessoaController> _logger;
