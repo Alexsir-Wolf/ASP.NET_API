@@ -48,7 +48,7 @@ namespace ASP.NET_API.Controllers
         public IActionResult Update([FromBody] Pessoa pessoa)
         {
             if (pessoa == null) return BadRequest();
-            return Ok(_pessoaService.Criar(pessoa));
+            return Ok(_pessoaService.Update(pessoa));
         }  
         
         [HttpDelete("{id}")]
@@ -58,4 +58,5 @@ namespace ASP.NET_API.Controllers
             return NoContent();
         }
     }
+    //aula 65
 }
