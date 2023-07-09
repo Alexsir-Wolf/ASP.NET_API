@@ -1,10 +1,10 @@
 ﻿using ASP.NET_API.Model;
 using System.Collections.Generic;
 
-namespace ASP.NET_API.Servicos
+namespace ASP.NET_API.Business
 {
-    public interface IPessoaService
-    {
+    public interface IPessoaBusiness
+	{
         Pessoa Criar(Pessoa pessoa);
         Pessoa ProcurarPorID(long id);
         List<Pessoa> ProcurarTodos();
