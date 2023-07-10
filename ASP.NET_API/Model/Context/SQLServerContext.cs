@@ -12,5 +12,6 @@ namespace ASP.NET_API.Model.Contexto
 		}
 
         public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Livro> Livros { get; set; }
     }
 }

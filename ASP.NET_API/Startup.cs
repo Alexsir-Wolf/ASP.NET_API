@@ -52,6 +52,8 @@ namespace ASP.NET_API
             //injeção de dependencia
             services.AddScoped<IPessoaBusiness, PessoaBusinessImplementation>();
             services.AddScoped<IPessoaRepository, PessoaRepositoryImplementation>();
+            services.AddScoped<ILivroBusiness, LivroBusinessImplementation>();
+            services.AddScoped<ILivroRepository, LivroRepositoryImplementation>();
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
