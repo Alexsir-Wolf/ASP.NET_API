@@ -1,0 +1,7 @@
+CREATE TABLE Livros (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Titulo VARCHAR(100),
+	Autor VARCHAR(100),
+	Preco DECIMAL(20,2),
+	DataLancamento DATETIME,
+);

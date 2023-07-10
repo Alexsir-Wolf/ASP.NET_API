@@ -42,7 +42,7 @@ namespace ASP.NET_API.Repository.Implementacoes
         public Pessoa Update(Pessoa pessoa)
         {
             if (!ExistePessoa(pessoa.Id))            
-                return new Pessoa();
+                return null;
 
             var result = _context.Pessoas.SingleOrDefault(x => x.Id.Equals(pessoa.Id));
 

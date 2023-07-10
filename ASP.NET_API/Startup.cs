@@ -9,17 +9,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ASP.NET_API.Repository;
 using ASP.NET_API.Repository.Implementacoes;
+using Serilog;
+using System;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace ASP.NET_API
 {
 	public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
-        }
+            Environment = environment;
 
-        public IConfiguration Configuration { get; }
+            //configurações de log
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +41,11 @@ namespace ASP.NET_API
             var conexao = Configuration["ConnectionStrings:SQLServerConnection"];
             services.AddDbContext<SQLServerContext>(options => options.UseSqlServer(conexao));
 
+            if (Environment.IsDevelopment())
+            {
+                MigrateDataBase(conexao);
+            }
+
             //Versionamento API
             services.AddApiVersioning();
 
@@ -38,8 +54,8 @@ namespace ASP.NET_API
             services.AddScoped<IPessoaRepository, PessoaRepositoryImplementation>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -57,5 +73,24 @@ namespace ASP.NET_API
                 endpoints.MapControllers();
             });
         }
-    }
+
+		private void MigrateDataBase(string conexao)
+		{
+            try
+            {
+                var evolveConexao = new SqlConnection(conexao);
+                var evolve = new Evolve.Evolve(evolveConexao, msg => Log.Information(msg))
+                {
+                    Locations = new List<string> { "db/migrations", "db/dataset" },
+                    IsEraseDisabled = true,
+                };
+                evolve.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Falha na Migration da DataBase", ex);
+                throw;
+            }
+		}
+	}
 }
