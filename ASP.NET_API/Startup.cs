@@ -8,11 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ASP.NET_API.Repository;
-using ASP.NET_API.Repository.Implementacoes;
 using Serilog;
 using System;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using ASP.NET_API.Repository.Generic;
 
 namespace ASP.NET_API
 {
@@ -51,9 +51,8 @@ namespace ASP.NET_API
 
             //injeção de dependencia
             services.AddScoped<IPessoaBusiness, PessoaBusinessImplementation>();
-            services.AddScoped<IPessoaRepository, PessoaRepositoryImplementation>();
             services.AddScoped<ILivroBusiness, LivroBusinessImplementation>();
-            services.AddScoped<ILivroRepository, LivroRepositoryImplementation>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

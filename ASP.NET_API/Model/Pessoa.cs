@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ASP.NET_API.Model.Base;
+using System;
 
 namespace ASP.NET_API.Model
 {
-    public class Pessoa
+    public class Pessoa : BaseEntity
     {
-        public long Id { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public string Endereco { get; set; }

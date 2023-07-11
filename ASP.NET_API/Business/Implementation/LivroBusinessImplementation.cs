@@ -9,9 +9,9 @@ namespace ASP.NET_API.Business.Implementacoes
 {
     public class LivroBusinessImplementation : ILivroBusiness
     {
-        private readonly ILivroRepository _repository;
+        private readonly IRepository<Livro> _repository;
 
-        public LivroBusinessImplementation(ILivroRepository repository) 
+        public LivroBusinessImplementation(IRepository<Livro> repository) 
         {
             _repository = repository;
         }

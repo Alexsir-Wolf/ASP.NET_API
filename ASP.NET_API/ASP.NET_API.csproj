@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\ILivroRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="db\migrations\V1__Drop_Table.sql" />
   </ItemGroup>
 

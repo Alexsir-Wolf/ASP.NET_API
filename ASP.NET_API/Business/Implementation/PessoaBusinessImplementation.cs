@@ -9,9 +9,9 @@ namespace ASP.NET_API.Business.Implementacoes
 {
     public class PessoaBusinessImplementation : IPessoaBusiness
     {
-        private readonly IPessoaRepository _repository;
+        private readonly IRepository<Pessoa> _repository;
 
-        public PessoaBusinessImplementation(IPessoaRepository repository) 
+        public PessoaBusinessImplementation(IRepository<Pessoa> repository) 
         {
             _repository = repository;
         }
