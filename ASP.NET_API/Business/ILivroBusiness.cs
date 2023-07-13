@@ -5,10 +5,10 @@ namespace ASP.NET_API.Business
 {
     public interface ILivroBusiness
 	{
-        Livro Criar(Livro livro);
-        Livro ProcurarPorID(long id);
-        List<Livro> ProcurarTodos();
-        Livro Update(Livro livro);
+		LivroVO Criar(LivroVO livro);
+		LivroVO ProcurarPorID(long id);
+        List<LivroVO> ProcurarTodos();
+		LivroVO Update(LivroVO livro);
         void Deletar(long id);
     }
 }

@@ -34,14 +34,14 @@ namespace ASP.NET_API.Controllers
         }        
         
         [HttpPost]
-        public IActionResult Criar([FromBody] Livro livro)
+        public IActionResult Criar([FromBody] LivroVO livro)
         {
             if (livro == null) return BadRequest();
             return Ok(_livroBusiness.Criar(livro));
         }      
         
         [HttpPut]
-        public IActionResult Update([FromBody] Livro livro)
+        public IActionResult Update([FromBody] LivroVO livro)
         {
             if (livro == null) return BadRequest();
             return Ok(_livroBusiness.Update(livro));

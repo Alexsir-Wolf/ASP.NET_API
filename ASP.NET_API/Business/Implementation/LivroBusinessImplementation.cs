@@ -1,40 +1,46 @@
-﻿using ASP.NET_API.Model;
-using ASP.NET_API.Model.Contexto;
+﻿using ASP.NET_API.Data.Converter.Implementations;
+using ASP.NET_API.Model;
 using ASP.NET_API.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ASP.NET_API.Business.Implementacoes
 {
-    public class LivroBusinessImplementation : ILivroBusiness
+	public class LivroBusinessImplementation : ILivroBusiness
     {
         private readonly IRepository<Livro> _repository;
+		private readonly LivroConverter _converter;
 
-        public LivroBusinessImplementation(IRepository<Livro> repository) 
+		public LivroBusinessImplementation(IRepository<Livro> repository) 
         {
             _repository = repository;
+            _converter = new LivroConverter();
         }
 
-        public Livro Criar(Livro livro)
+        public LivroVO Criar(LivroVO livro)
         {
-            return _repository.Criar(livro);
-        }
+			//parse de VO para LIVRO, persiste em CRIAR e converte para VO e retorna
+			var livroEntity = _converter.Parse(livro);
+			livroEntity = _repository.Criar(livroEntity);
+			return _converter.Parse(livroEntity);
+		}
 
-        public Livro ProcurarPorID(long id)
+        public LivroVO ProcurarPorID(long id)
         {
-            return _repository.ProcurarPorID(id);
-        }
+			return _converter.Parse(_repository.ProcurarPorID(id));
+		}
 
-        public List<Livro> ProcurarTodos()
+        public List<LivroVO> ProcurarTodos()
         {
-            return _repository.ProcurarTodos();
-        }
+			return _converter.Parse(_repository.ProcurarTodos());
+		}
 
-        public Livro Update(Livro livro)
+        public LivroVO Update(LivroVO livro)
         {
-            return _repository.Update(livro);
-        }
+			//parse de VO para LIVRO, persiste em UPDATE e converte para VO e retorna
+			var livroEntity = _converter.Parse(livro);
+			livroEntity = _repository.Update(livroEntity);
+			return _converter.Parse(livroEntity);
+		}
 
 		public void Deletar(long id)
 		{

@@ -1,40 +1,47 @@
-﻿using ASP.NET_API.Model;
-using ASP.NET_API.Model.Contexto;
+﻿using ASP.NET_API.Data.Converter.Implementations;
+using ASP.NET_API.Data.VO;
+using ASP.NET_API.Model;
 using ASP.NET_API.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ASP.NET_API.Business.Implementacoes
 {
-    public class PessoaBusinessImplementation : IPessoaBusiness
+	public class PessoaBusinessImplementation : IPessoaBusiness
     {
         private readonly IRepository<Pessoa> _repository;
+        private readonly PessoaConverter _converter;
 
         public PessoaBusinessImplementation(IRepository<Pessoa> repository) 
         {
             _repository = repository;
+            _converter = new PessoaConverter();
         }
 
-        public Pessoa Criar(Pessoa pessoa)
+        public PessoaVO Criar(PessoaVO pessoa)
         {
-            return _repository.Criar(pessoa);
+            //parse de VO para PESSOA, persiste em CRIAR e converte para VO e retorna
+            var pessoaEntity = _converter.Parse(pessoa);
+            pessoaEntity = _repository.Criar(pessoaEntity);
+            return _converter.Parse(pessoaEntity);
         }
 
-        public Pessoa ProcurarPorID(long id)
+        public PessoaVO ProcurarPorID(long id)
         {
-            return _repository.ProcurarPorID(id);
+            return _converter.Parse(_repository.ProcurarPorID(id));
         }
 
-        public List<Pessoa> ProcurarTodos()
+        public List<PessoaVO> ProcurarTodos()
         {
-            return _repository.ProcurarTodos();
+            return _converter.Parse(_repository.ProcurarTodos());
         }
 
-        public Pessoa Update(Pessoa pessoa)
+        public PessoaVO Update(PessoaVO pessoa)
         {
-            return _repository.Update(pessoa);
-        }
+			//parse de VO para PESSOA, persiste em UPDATE e converte para VO e retorna
+			var pessoaEntity = _converter.Parse(pessoa);
+			pessoaEntity = _repository.Update(pessoaEntity);
+			return _converter.Parse(pessoaEntity);
+		}
 
 		public void Deletar(long id)
 		{

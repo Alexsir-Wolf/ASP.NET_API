@@ -1,7 +1,7 @@
-﻿using ASP.NET_API.Model;
-using ASP.NET_API.Business;
+﻿using ASP.NET_API.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ASP.NET_API.Data.VO;
 
 namespace ASP.NET_API.Controllers
 {
@@ -34,14 +34,14 @@ namespace ASP.NET_API.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Criar([FromBody] Pessoa pessoa)
+		public IActionResult Criar([FromBody] PessoaVO pessoa)
 		{
 			if (pessoa == null) return BadRequest();
 			return Ok(_pessoaBusiness.Criar(pessoa));
 		}
 
 		[HttpPut]
-		public IActionResult Update([FromBody] Pessoa pessoa)
+		public IActionResult Update([FromBody] PessoaVO pessoa)
 		{
 			if (pessoa == null) return BadRequest();
 			return Ok(_pessoaBusiness.Update(pessoa));
