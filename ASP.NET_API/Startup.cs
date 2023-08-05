@@ -13,6 +13,7 @@ using System;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using ASP.NET_API.Repository.Generic;
+using System.Net.Http.Headers;
 
 namespace ASP.NET_API
 {
@@ -45,6 +46,15 @@ namespace ASP.NET_API
             {
                 MigrateDataBase(conexao);
             }
+
+            //Add services sainda em XML ou JSON
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml").ToString());
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json").ToString());
+            })
+            .AddXmlSerializerFormatters();
 
             //Versionamento API
             services.AddApiVersioning();
