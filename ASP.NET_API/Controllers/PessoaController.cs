@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ASP.NET_API.Data.VO;
+using ASP.NET_API.Hypermedia.Filters;
 
 namespace ASP.NET_API.Controllers
 {
-	[ApiVersion("1")]
-	[ApiController]
+    [ApiVersion("1")]
+    [ApiController]
     [Route("api/pessoa/v{version:apiVersion}")]
     public class PessoaController : ControllerBase
     {
@@ -20,13 +21,15 @@ namespace ASP.NET_API.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult ProcurarTodos()
         {
             return Ok(_pessoaBusiness.ProcurarTodos());
         }       
         
         [HttpGet("{id}")]
-        public IActionResult ProcurarPorID(long id)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult ProcurarPorID(long id)
         {
             var pessoa = _pessoaBusiness.ProcurarPorID(id);
             if (pessoa == null) return NotFound();
@@ -34,21 +37,23 @@ namespace ASP.NET_API.Controllers
         }        
         
         [HttpPost]
-        public IActionResult Criar([FromBody] PessoaVO pessoa)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult Criar([FromBody] PessoaVO pessoa)
         {
             if (pessoa == null) return BadRequest();
             return Ok(_pessoaBusiness.Criar(pessoa));
         }      
         
         [HttpPut]
-        public IActionResult Update([FromBody] PessoaVO pessoa)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult Update([FromBody] PessoaVO pessoa)
         {
             if (pessoa == null) return BadRequest();
             return Ok(_pessoaBusiness.Update(pessoa));
         }  
         
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+		public IActionResult Delete(long id)
         {
             _pessoaBusiness.Deletar(id);
             return NoContent();

@@ -14,6 +14,8 @@ using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using ASP.NET_API.Repository.Generic;
 using System.Net.Http.Headers;
+using ASP.NET_API.Hypermedia.Filters;
+using ASP.NET_API.Hypermedia.Enricher;
 
 namespace ASP.NET_API
 {
@@ -56,6 +58,13 @@ namespace ASP.NET_API
             })
             .AddXmlSerializerFormatters();
 
+            //ADD HATEOAS para PESSOA
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentResponseEnricherList.Add(new PessoaEnricher());
+            filterOptions.ContentResponseEnricherList.Add(new LivroEnricher());
+
+            services.AddSingleton(filterOptions);
+
             //Versionamento API
             services.AddApiVersioning();
 
@@ -82,6 +91,7 @@ namespace ASP.NET_API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
 

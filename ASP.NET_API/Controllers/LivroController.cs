@@ -2,6 +2,7 @@
 using ASP.NET_API.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ASP.NET_API.Hypermedia.Filters;
 
 namespace ASP.NET_API.Controllers
 {
@@ -20,13 +21,15 @@ namespace ASP.NET_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProcurarTodos()
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult ProcurarTodos()
         {
             return Ok(_livroBusiness.ProcurarTodos());
         }       
         
         [HttpGet("{id}")]
-        public IActionResult ProcurarPorID(long id)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult ProcurarPorID(long id)
         {
             var livro = _livroBusiness.ProcurarPorID(id);
             if (livro == null) return NotFound();
@@ -34,14 +37,16 @@ namespace ASP.NET_API.Controllers
         }        
         
         [HttpPost]
-        public IActionResult Criar([FromBody] LivroVO livro)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult Criar([FromBody] LivroVO livro)
         {
             if (livro == null) return BadRequest();
             return Ok(_livroBusiness.Criar(livro));
         }      
         
         [HttpPut]
-        public IActionResult Update([FromBody] LivroVO livro)
+		[TypeFilter(typeof(HyperMediaFilter))]
+		public IActionResult Update([FromBody] LivroVO livro)
         {
             if (livro == null) return BadRequest();
             return Ok(_livroBusiness.Update(livro));
