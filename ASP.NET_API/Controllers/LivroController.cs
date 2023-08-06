@@ -3,6 +3,8 @@ using ASP.NET_API.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ASP.NET_API.Hypermedia.Filters;
+using ASP.NET_API.Data.VO;
+using System.Collections.Generic;
 
 namespace ASP.NET_API.Controllers
 {
@@ -21,6 +23,10 @@ namespace ASP.NET_API.Controllers
         }
 
         [HttpGet]
+		[ProducesResponseType(200, Type = typeof(List<LivroVO>))]
+		[ProducesResponseType(204)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
 		[TypeFilter(typeof(HyperMediaFilter))]
 		public IActionResult ProcurarTodos()
         {
@@ -28,6 +34,10 @@ namespace ASP.NET_API.Controllers
         }       
         
         [HttpGet("{id}")]
+		[ProducesResponseType(200, Type = typeof(LivroVO))]
+		[ProducesResponseType(204)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
 		[TypeFilter(typeof(HyperMediaFilter))]
 		public IActionResult ProcurarPorID(long id)
         {
@@ -37,6 +47,9 @@ namespace ASP.NET_API.Controllers
         }        
         
         [HttpPost]
+		[ProducesResponseType(200, Type = typeof(LivroVO))]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
 		[TypeFilter(typeof(HyperMediaFilter))]
 		public IActionResult Criar([FromBody] LivroVO livro)
         {
@@ -45,6 +58,9 @@ namespace ASP.NET_API.Controllers
         }      
         
         [HttpPut]
+		[ProducesResponseType(200, Type = typeof(LivroVO))]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
 		[TypeFilter(typeof(HyperMediaFilter))]
 		public IActionResult Update([FromBody] LivroVO livro)
         {
@@ -53,7 +69,10 @@ namespace ASP.NET_API.Controllers
         }  
         
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+		[ProducesResponseType(204)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(401)]
+		public IActionResult Delete(long id)
         {
             _livroBusiness.Deletar(id);
             return NoContent();

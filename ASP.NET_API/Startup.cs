@@ -16,6 +16,8 @@ using ASP.NET_API.Repository.Generic;
 using System.Net.Http.Headers;
 using ASP.NET_API.Hypermedia.Filters;
 using ASP.NET_API.Hypermedia.Enricher;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace ASP.NET_API
 {
@@ -68,6 +70,23 @@ namespace ASP.NET_API
             //Versionamento API
             services.AddApiVersioning();
 
+            //ADD SWAGGER
+            services.AddSwaggerGen(x => {
+                x.SwaggerDoc("v1", 
+                    new OpenApiInfo
+                    {
+                        Title = "API REST com ASP.NET Core 5 e Docker",
+                        Version = "v1",
+                        Description = "API RESTFUL desenvolvida em estudo",
+                        Contact = new OpenApiContact 
+                        {
+                            Name = "Alex Freitas",
+                            Email = "freitas.alex.soares@outlook.com",
+                            Url = new Uri("https://github.com/Alexsir-Wolf")                       
+                        }
+                    });
+            });
+
             //injeção de dependencia
             services.AddScoped<IPessoaBusiness, PessoaBusinessImplementation>();
             services.AddScoped<ILivroBusiness, LivroBusinessImplementation>();
@@ -85,6 +104,16 @@ namespace ASP.NET_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x=> 
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "API REST com ASP.NET Core 5 e Docker");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
 
             app.UseAuthorization();
 
