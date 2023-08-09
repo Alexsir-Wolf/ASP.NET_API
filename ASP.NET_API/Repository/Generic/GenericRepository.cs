@@ -50,7 +50,7 @@ namespace ASP.NET_API.Repository.Generic
 
 		public bool ExistePessoa(long id)
 		{
-			throw new System.NotImplementedException();
+			return dataset.Any(x => x.Id.Equals(id));
 		}
 
 		public T ProcurarPorID(long id)

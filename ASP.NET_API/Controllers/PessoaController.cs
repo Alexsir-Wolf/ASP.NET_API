@@ -4,12 +4,14 @@ using Microsoft.Extensions.Logging;
 using ASP.NET_API.Data.VO;
 using ASP.NET_API.Hypermedia.Filters;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_API.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
-    [Route("api/pessoa/v{version:apiVersion}")]
+	[Authorize("Bearer")]
+	[Route("api/pessoa/v{version:apiVersion}")]
     public class PessoaController : ControllerBase
     {
         private readonly ILogger<PessoaController> _logger;

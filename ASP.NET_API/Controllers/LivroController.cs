@@ -5,11 +5,13 @@ using Microsoft.Extensions.Logging;
 using ASP.NET_API.Hypermedia.Filters;
 using ASP.NET_API.Data.VO;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_API.Controllers
 {
     [ApiVersion("1")]
 	[ApiController]
+    [Authorize("Bearer")]
     [Route("api/livro/v{version:apiVersion}")]
     public class LivroController : ControllerBase
     {

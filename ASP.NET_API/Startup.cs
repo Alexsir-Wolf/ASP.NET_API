@@ -18,6 +18,15 @@ using ASP.NET_API.Hypermedia.Filters;
 using ASP.NET_API.Hypermedia.Enricher;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using ASP.NET_API.Services;
+using ASP.NET_API.Services.Implementations;
+using ASP.NET_API.Business.Implementation;
+using ASP.NET_API.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_API
 {
@@ -40,6 +49,39 @@ namespace ASP.NET_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //pega a configuração dentro do appsettings.json
+            var tokenConfig = new TokenConfiguration();
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(Configuration.GetSection("TokenConfigurations")).Configure(tokenConfig);
+            services.AddSingleton(tokenConfig);
+
+            //Serviço de autenticação
+            services.AddAuthentication(opcoes => 
+            {
+                opcoes.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opcoes.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            
+            }).AddJwtBearer(opcoes => 
+            {
+                opcoes.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfig.Emissor,
+                    ValidAudience = tokenConfig.Audiencia,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfig.Segredo))
+                };
+            });
+
+            //Serviço de autorização
+            services.AddAuthorization(opcoes => 
+            {
+                opcoes.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
+
             services.AddCors(options => options.AddDefaultPolicy(builder =>
             {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
@@ -95,6 +137,11 @@ namespace ASP.NET_API
             //injeção de dependencia
             services.AddScoped<IPessoaBusiness, PessoaBusinessImplementation>();
             services.AddScoped<ILivroBusiness, LivroBusinessImplementation>();
+            services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
+            services.AddTransient<ITokenService, TokenService>();
+
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
