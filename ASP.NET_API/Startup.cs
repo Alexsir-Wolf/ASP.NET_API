@@ -58,8 +58,7 @@ namespace ASP.NET_API
             services.AddAuthentication(opcoes => 
             {
                 opcoes.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opcoes.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            
+                opcoes.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;            
             }).AddJwtBearer(opcoes => 
             {
                 opcoes.TokenValidationParameters = new TokenValidationParameters

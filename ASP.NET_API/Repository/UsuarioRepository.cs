@@ -21,9 +21,9 @@ namespace ASP.NET_API.Repository
 
 		public Usuario ValidarCredencial(UsuarioVO usuario)
 		{
-			var passe = Encryptar(usuario.Senha, new SHA256CryptoServiceProvider());
+			var senhaEncryptada = Encryptar(usuario.Senha, new SHA256CryptoServiceProvider());
 
-			return _context.Usuarios.FirstOrDefault(x => (x.NomeUsuario == usuario.NomeUsuario) && (x.Senha == usuario.Senha));
+			return _context.Usuarios.FirstOrDefault(x => (x.NomeUsuario == usuario.NomeUsuario) && (x.Senha == senhaEncryptada));
 		}
 
 		public Usuario UpdateUsuario(Usuario usuario)
@@ -50,9 +50,8 @@ namespace ASP.NET_API.Repository
 
 		private string Encryptar(string senha, SHA256CryptoServiceProvider algoritmo)
 		{
-			//Byte[] inputBytes = Encoding.UTF8.GetBytes(senha);
 			Byte[] hashedBytes = algoritmo.ComputeHash(Encoding.UTF8.GetBytes(senha));
-			return BitConverter.ToString(hashedBytes);
+			return BitConverter.ToString(hashedBytes);			 
 		}
 	}
 }
